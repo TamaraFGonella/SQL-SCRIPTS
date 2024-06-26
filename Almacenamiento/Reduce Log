@@ -1,0 +1,79 @@
+--use dbadmin
+go
+
+
+--create proc logs.ReduceLogsBatch
+--as
+declare @name varchar(200)
+declare @logicoMdfName varchar(100)
+declare @logicoLdfName varchar(100)
+declare @fisicoMdfName varchar(100)
+declare @fisicoLdfName varchar(100)
+declare @modelo varchar(20)
+
+
+DECLARE db_cursor CURSOR FOR  
+SELECT name 
+FROM MASTER.dbo.sysdatabases 
+WHERE name NOT IN ('master','model','msdb','tempdb') and name not like 'report%' 
+order by name
+
+OPEN db_cursor   
+FETCH NEXT FROM db_cursor INTO @name   
+
+WHILE @@FETCH_STATUS = 0   
+BEGIN   
+
+		select @modelo = recovery_model_desc   from sys.databases where name = @name 
+
+		select @logicoldfname = a.LogicalFileName, @fisicoldfname = a.PhysicalFileName from 
+		(
+			SELECT DB_NAME(database_id) AS DatabaseName, name AS LogicalFileName, 
+				RIGHT(physical_name,CHARINDEX('\',REVERSE(physical_name))-1) AS PhysicalFileName 
+				FROM sys.master_files AS mf
+		) a
+		where a.DatabaseName = @name and (a.PhysicalFileName like '%.ldf%' or a.PhysicalFileName like '%_log%' or a.LogicalFileName like '%_log%')
+		
+		select @logicomdfname = a.LogicalFileName, @fisicomdfname = a.PhysicalFileName from 
+		(
+			SELECT DB_NAME(database_id) AS DatabaseName, name AS LogicalFileName, 
+				RIGHT(physical_name,CHARINDEX('\',REVERSE(physical_name))-1) AS PhysicalFileName 
+				FROM sys.master_files AS mf 
+				where (
+					RIGHT(physical_name,CHARINDEX('\',REVERSE(physical_name))-1) like '%.mdf%' 
+					or db_name(database_id) like '%_dat%'
+				)
+		) a
+		where a.DatabaseName = @name 
+
+
+		declare @recovery_model_desc varchar(15)
+        select @recovery_model_desc = recovery_model_desc from sys.databases where name = @name
+        
+		print '----------------------' + upper(@name) + '--------------------------'
+		print '-------------------------------------------------------------'
+		print 'USE [' + @name + ']'
+		print 'GO'
+		if @modelo = 'FULL'
+		begin
+	        PRINT 'ALTER DATABASE [' + @NAME + '] SET RECOVERY SIMPLE'
+		end
+        PRINT 'GO'
+		PRINT 'DBCC SHRINKFILE ([' + @LOGICOLDFNAME + '] , 0)'
+		PRINT 'GO'
+		if @modelo = 'FULL'
+		begin
+	        PRINT 'ALTER DATABASE [' + @NAME + '] SET RECOVERY FULL'
+		end 
+		PRINT 'GO'
+		--PRINT 'ALTER DATABASE [' + @NAME + ']'
+		--PRINT 'MODIFY FILE (NAME = [' + @LOGICOLDFNAME + '], SIZE = 1MB, FILEGROWTH = 256MB)'
+		--PRINT '-------------------------------------------------------------'		      
+		--PRINT 'GO'
+       
+
+       FETCH NEXT FROM db_cursor INTO @name   
+END   
+
+CLOSE db_cursor   
+DEALLOCATE db_cursor
