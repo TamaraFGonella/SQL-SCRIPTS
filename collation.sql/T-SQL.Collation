@@ -1,0 +1,12 @@
+-- Consulta para comparar el collation entre dos servidores
+SELECT 
+    s1.name AS 'Server 1', 
+    s1.collation_name AS 'Server 1 Collation',
+    s2.name AS 'Server 2',
+    s2.collation_name AS 'Server 2 Collation'
+FROM
+    (SELECT @@SERVERNAME AS name, SERVERPROPERTY('collation') AS collation_name) s1
+CROSS JOIN
+    (SELECT @@SERVERNAME AS name, SERVERPROPERTY('collation') AS collation_name) s2
+WHERE 
+    s1.collation_name <> s2.collation_name
