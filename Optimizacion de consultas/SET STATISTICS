@@ -1,0 +1,3 @@
+SET STATISTICS TIME, IO ON;
+-- Ejecutar la consulta que deseas analizar
+SET STATISTICS TIME, IO OFF;
