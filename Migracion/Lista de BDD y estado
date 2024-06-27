@@ -1,0 +1,4 @@
+SELECT name, database_id, state_desc 
+FROM sys.databases;
+
+-- Esta consulta te muestra el nombre de todas las bases de datos, su ID y su estado (por ejemplo, ONLINE, OFFLINE, etc.).
