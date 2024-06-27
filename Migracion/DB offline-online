@@ -1,0 +1,7 @@
+ALTER DATABASE NombreDeBase SET OFFLINE WITH ROLLBACK IMMEDIATE;
+
+-- Estado de la base de datos: Al poner una base de datos offline, esta ya no estará accesible para consultas ni actualizaciones.
+
+ALTER DATABASE NombreDeBase SET ONLINE;
+
+-- Estado de la base de datos: Al poner una base de datos en línea, esta estará accesible nuevamente para consultas y actualizaciones.
