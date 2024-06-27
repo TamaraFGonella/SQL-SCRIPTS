@@ -1,0 +1,5 @@
+SELECT DB_NAME(database_id) AS database_name,
+       name AS logical_name,
+       size * 8 / 1024 AS size_MB
+FROM sys.master_files
+WHERE type = 0;  -- Filtrar solo archivos de datos
