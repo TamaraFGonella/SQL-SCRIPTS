@@ -1,0 +1,12 @@
+sp_procoption [ @ProcName = ] 'procedure'
+    , [ @OptionName = ] 'option'
+    , [ @OptionValue = ] 'value'
+
+-- Configurar un procedimiento almacenado para ejecutarse al inicio de SQL Server
+
+EXEC sp_procoption @ProcName = 'nombre_del_procedimiento', @OptionName = 'STARTUP', @OptionValue = 'ON';
+
+-- Configurar un procedimiento almacenado para ejecutarse al apagar SQL Server
+
+EXEC sp_procoption @ProcName = 'nombre_del_procedimiento', @OptionName = 'SHUTDOWN', @OptionValue = 'ON';
+
