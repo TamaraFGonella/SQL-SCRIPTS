@@ -1,0 +1,2 @@
+-- Informacion de conexiones activas 
+EXEC sys.sp_who;
