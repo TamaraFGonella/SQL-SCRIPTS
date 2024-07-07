@@ -1,0 +1,3 @@
+EXEC sp_resetstatus nombrebd;
+
+ALTER DATABASE nombrebd SET EMERGENCY
