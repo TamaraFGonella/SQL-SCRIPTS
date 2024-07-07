@@ -1,0 +1,11 @@
+SELECT 
+    name AS DatabaseName,
+    state_desc AS DatabaseState
+FROM 
+    sys.databases
+WHERE 
+    state_desc = 'SUSPECT';
+IF EXISTS (SELECT 1 FROM sys.databases WHERE state_desc = 'SUSPECT')
+BEGIN
+    EXEC xp_readerrorlog 0, 1, 'Starting up database';
+END
