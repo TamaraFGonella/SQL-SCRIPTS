@@ -1,4 +1,5 @@
-SELECT name, database_id, state_desc 
-FROM sys.databases;
+SELECT name, state_desc 
+FROM sys.databases where name in ('') -- Filtrar base 
+AND state_desc 'ONLINE' -- Filtrar estado 
 
--- Esta consulta te muestra el nombre de todas las bases de datos, su ID y su estado (por ejemplo, ONLINE, OFFLINE, etc.).
+-- Esta consulta te muestra el nombre de todas las bases de datos, y su estado (por ejemplo, ONLINE, OFFLINE, etc.).
