@@ -7,3 +7,5 @@ ALTER DATABASE NombreDeBase SET ONLINE;
 -- Estado de la base de datos: Al poner una base de datos en línea, esta estará accesible nuevamente para consultas y actualizaciones.
 
 and state_desc = 'online' 
+and state_desc not in ('-')
+
