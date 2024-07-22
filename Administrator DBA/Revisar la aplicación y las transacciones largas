@@ -1,0 +1,11 @@
+SELECT
+    blocking_session_id AS BlockingSession,
+    session_id AS BlockedSession,
+    wait_type,
+    wait_time,
+    wait_resource,
+    blocking_session_id
+FROM sys.dm_exec_requests
+WHERE blocking_session_id <> 0;
+
+-- Lista de sesiones bloqueadas y bloqueantes.
