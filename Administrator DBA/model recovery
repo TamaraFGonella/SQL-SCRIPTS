@@ -1,0 +1,5 @@
+SELECT name, recovery_model_desc FROM sys.databases WHERE name = 'ptg_pp';
+
+-- cambiar de MR
+
+ALTER DATABASE 'ptg_pp' SET RECOVERY FULL;
