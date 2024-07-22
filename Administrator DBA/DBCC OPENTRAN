@@ -1,0 +1,4 @@
+-- El comando DBCC OPENTRAN te muestra las transacciones activas en la base de datos.
+-- Esto incluye el ID de la transacción, el tiempo que ha estado abierta.
+
+DBCC OPENTRAN ('PTG_GPP'); 
