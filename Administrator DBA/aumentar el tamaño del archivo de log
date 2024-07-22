@@ -1,0 +1,2 @@
+ALTER DATABASE 'ptg_pp' MODIFY FILE (NAME = 'ptg_pp_log', SIZE = 500MB);
+
