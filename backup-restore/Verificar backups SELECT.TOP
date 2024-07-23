@@ -1,0 +1,15 @@
+SELECT TOP 1
+    database_name,
+    backup_finish_date,
+    CASE 
+        WHEN type = 'D' THEN 'Full'
+        WHEN type = 'I' THEN 'Differential'
+        WHEN type = 'L' THEN 'Log'
+        ELSE type
+    END AS backup_type,
+    backup_size / 1024 / 1024 AS backup_size_MB,
+    physical_device_name
+FROM msdb.dbo.backupset bs
+JOIN msdb.dbo.backupmediafamily bmf ON bs.media_set_id = bmf.media_set_id
+WHERE database_name = 'database_blabla'
+ORDER BY backup_finish_date DESC;
