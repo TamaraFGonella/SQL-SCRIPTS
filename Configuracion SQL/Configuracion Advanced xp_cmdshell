@@ -1,0 +1,13 @@
+DECLARE @is_xp_cmdshell_enabled INT;
+
+-- Verificar si la opción xp_cmdshell está habilitada
+EXEC sp_configure 'show advanced options', 1;
+RECONFIGURE;
+EXEC sp_configure 'xp_cmdshell', @is_xp_cmdshell_enabled OUTPUT;
+
+-- Mostrar el estado de xp_cmdshell
+SELECT 
+    CASE 
+        WHEN @is_xp_cmdshell_enabled = 1 THEN 'xp_cmdshell está habilitado'
+        ELSE 'xp_cmdshell no está habilitado'
+    END AS Estado_xp_cmdshell;
